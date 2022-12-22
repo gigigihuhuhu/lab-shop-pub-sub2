@@ -17,39 +17,22 @@ import labshoppubsub.domain.*;
 @Service
 @Transactional
 public class PolicyHandler{
-    @Autowired InventoryRepository inventoryRepository;
+    @Autowired DeliveryRepository deliveryRepository;
     
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString){}
 
     @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderPlaced'")
-    public void wheneverOrderPlaced_DecreaseStock(@Payload OrderPlaced orderPlaced){
+    public void wheneverOrderPlaced_AddToDeliveryList(@Payload OrderPlaced orderPlaced){
 
         OrderPlaced event = orderPlaced;
-        System.out.println("\n\n##### listener DecreaseStock : " + orderPlaced + "\n\n");
+        System.out.println("\n\n##### listener AddToDeliveryList : " + orderPlaced + "\n\n");
 
 
         
 
         // Sample Logic //
-        Inventory.decreaseStock(event);
-        
-
-        
-
-    }
-
-    @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderCanceled'")
-    public void wheneverOrderCanceled_IncreaseStock(@Payload OrderCanceled orderCanceled){
-
-        OrderCanceled event = orderCanceled;
-        System.out.println("\n\n##### listener IncreaseStock : " + orderCanceled + "\n\n");
-
-
-        
-
-        // Sample Logic //
-        Inventory.increaseStock(event);
+        Delivery.addToDeliveryList(event);
         
 
         

@@ -1,6 +1,7 @@
 package labshoppubsub.domain;
 
 import labshoppubsub.domain.OrderPlaced;
+import labshoppubsub.domain.OrderCanceled;
 import labshoppubsub.OrderApplication;
 import javax.persistence.*;
 import java.util.List;
@@ -55,6 +56,11 @@ public class Order  {
 
         OrderPlaced orderPlaced = new OrderPlaced(this);
         orderPlaced.publishAfterCommit();
+
+
+
+        OrderCanceled orderCanceled = new OrderCanceled(this);
+        orderCanceled.publishAfterCommit();
 
     }
     @PrePersist
